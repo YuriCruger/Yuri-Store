@@ -1,5 +1,5 @@
 import { prismaClient } from "@/lib/prisma";
-import { CategoryItem } from "./categoryItem";
+import { CategoryItem } from "./CategoryItem";
 
 export async function Categories() {
   const categories = await prismaClient.category.findMany({});
@@ -9,7 +9,6 @@ export async function Categories() {
       {categories.map((category) => (
         <div>
           <CategoryItem key={category.id} category={category} />
-          {category.name}
         </div>
       ))}
     </div>
