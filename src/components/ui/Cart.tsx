@@ -4,9 +4,10 @@ import { useContext } from "react";
 import { cartContext } from "@/providers/cart";
 import { CartItem } from "./CartItem";
 import { computeProductTotalPrice } from "@/helpers/product";
+import { Separator } from "./separator";
 
 export default function Cart() {
-  const { products } = useContext(cartContext);
+  const { products, total, subtotal, totalDiscount } = useContext(cartContext);
   return (
     <div className="flex flex-col gap-5">
       <Badge
@@ -14,19 +15,53 @@ export default function Cart() {
         variant="outline"
       >
         <ShoppingCartIcon size={16} />
-        Catálogo
+        Carrinho
       </Badge>
 
       <div className="flex flex-col gap-5">
-        {products.map((product) => (
-          <CartItem
-            key={product.id}
-            product={{
-              ...product,
-              totalPrice: computeProductTotalPrice(product),
-            }}
-          />
-        ))}
+        {products.length > 0 ? (
+          products.map((product) => (
+            <CartItem
+              key={product.id}
+              product={{
+                ...product,
+                totalPrice: computeProductTotalPrice(product),
+              }}
+            />
+          ))
+        ) : (
+          <p>Carrinho vazio. Vamos fazer compras?</p>
+        )}
+      </div>
+
+      <div className="flex flex-col gap-3">
+        <Separator />
+
+        <div className="flex items-center justify-between text-xs">
+          <p>Subtotal</p>
+          <p>R$ {subtotal.toFixed(2)}</p>
+        </div>
+
+        <Separator />
+
+        <div className="flex items-center justify-between text-xs">
+          <p>Entrega</p>
+          <p>GRÁTIS</p>
+        </div>
+
+        <Separator />
+
+        <div className="flex items-center justify-between text-xs">
+          <p>Descontos</p>
+          <p>R$ {totalDiscount.toFixed(2)}</p>
+        </div>
+
+        <Separator />
+
+        <div className="flex items-center justify-between text-sm font-bold">
+          <p>Total</p>
+          <p>R$ {total.toFixed(2)}</p>
+        </div>
       </div>
     </div>
   );
